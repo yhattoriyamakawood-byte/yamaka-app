@@ -153,9 +153,9 @@ button{ font-family:inherit; }
 
 .h-scroll{ display:flex; gap:12px; overflow-x:auto; padding:2px 0 6px; margin:0 -20px; padding-left:20px; padding-right:20px; }
 .h-scroll::-webkit-scrollbar{ display:none; }
-#reco-card-wrap{ display:flex; gap:10px; }
+#reco-card-wrap{ display:flex; flex-direction:column; gap:10px; }
 .reco-card{
-  display:flex; align-items:center; border-radius:var(--r-l); overflow:hidden; cursor:pointer; background:var(--surface); box-shadow:var(--shadow-card); flex:1; min-width:0;
+  display:flex; align-items:center; border-radius:var(--r-l); overflow:hidden; cursor:pointer; background:var(--surface); box-shadow:var(--shadow-card);
 }
 .reco-thumb{
   width:72px; flex-shrink:0; height:72px; display:flex; align-items:center; justify-content:center; position:relative;
