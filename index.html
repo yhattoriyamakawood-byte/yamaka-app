@@ -1940,7 +1940,9 @@ function sendDailySummary(s){
       rank: info.name,
       photo: s.profilePhotoThumb||'',
       taScore60:  s.bestTA60||0,
-      taScore300: s.bestTA300||0
+      taScore300: s.bestTA300||0,
+      taRate60:   s.bestTA60Rate||0,
+      taRate300:  s.bestTA300Rate||0
     };
     fetch(GAS_URL,{
       method:'POST',
@@ -2346,9 +2348,11 @@ function _endTA(){
   stopTimeAttackIfActive();
   // TAスコア保存（正解数をベストスコアとして記録）
   var _taCorrect=quizSession.userAnswers.filter(function(a){return a.isCorrect;}).length;
+  var _taAnswered=quizSession.userAnswers.length;
+  var _taRate=_taAnswered>0?Math.round(_taCorrect/_taAnswered*100):0;
   var _s=getState();
-  if(_taTotal===60){ _s.bestTA60=Math.max(_s.bestTA60||0,_taCorrect); }
-  else if(_taTotal===300){ _s.bestTA300=Math.max(_s.bestTA300||0,_taCorrect); }
+  if(_taTotal===60){ if(_taCorrect>=(_s.bestTA60||0)){ _s.bestTA60=_taCorrect; _s.bestTA60Rate=_taRate; } }
+  else if(_taTotal===300){ if(_taCorrect>=(_s.bestTA300||0)){ _s.bestTA300=_taCorrect; _s.bestTA300Rate=_taRate; } }
   saveState(_s);
   // 回答済みの問題で終了
   var answered=quizSession.userAnswers.length;
@@ -2579,9 +2583,9 @@ function _renderRankingData(data, nenchi){
       '<div class="rank-av">'+(isMe ? (s.profilePhoto ? '<img src="'+s.profilePhoto+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">' : u.name.charAt(0)) : (u.photo ? '<img src="'+u.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">' : (u.name?u.name.charAt(0):'?')))+'</div>'+
       '<div class="rank-info">'+
         '<div class="n">'+u.name+(isMe?' (あなた)':'')+'</div>'+
-        '<div class="d">'+u.branch+' / '+u.nenchi+' / 正答率'+u.rate+'%</div>'+
+        '<div class="d">'+u.branch+' / '+u.nenchi+' / 正答率'+(_currentRankType==='ta60'?(u.taRate60||0):_currentRankType==='ta300'?(u.taRate300||0):u.rate)+'%</div>'+
       '</div>'+
-      '<div class="rank-score">'+((_currentRankType==='ta60')?u.taScore60+'問正解':(_currentRankType==='ta300')?u.taScore300+'問正解':u.totalExp.toLocaleString()+' EXP')+'</div>'+
+      '<div class="rank-score">'+((_currentRankType==='ta60')?(u.taScore60||0)+'問正解':(_currentRankType==='ta300')?(u.taScore300||0)+'問正解':u.totalExp.toLocaleString()+' EXP')+'</div>'+
     '</div>';
   });
   list.innerHTML = html;
