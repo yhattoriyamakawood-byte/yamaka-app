@@ -1,0 +1,17 @@
+{
+  "name": "ヤマカ木材 育成アプリ",
+  "short_name": "ヤマカ木材",
+  "description": "ヤマカ木材 育成アプリ（プロトタイプ）",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0ebe2",
+  "theme_color": "#3d6b30",
+  "icons": [
+    {
+      "src": "HOP.png",
+      "sizes": "1041x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

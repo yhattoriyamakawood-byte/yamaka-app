@@ -29,6 +29,7 @@ body{
   color:var(--ink);
   display:flex;
   justify-content:center;
+  align-items:flex-start;
   min-height:100vh;
 }
 .num{ font-family:'Inter', sans-serif; }
@@ -37,14 +38,14 @@ body{
 .app{
   width:100%;
   max-width:430px;
-  min-height:100vh;
+  min-height:0;
   background:var(--bg);
   position:relative;
   display:flex;
   flex-direction:column;
   overflow-x:hidden;
 }
-.screen{ display:none; flex:1; flex-direction:column; padding-bottom:100px; }
+.screen{ display:none; flex-direction:column; padding-bottom:100px; }
 .screen.active{ display:flex; animation:screenIn .32s cubic-bezier(.22,1,.36,1); }
 @keyframes screenIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
 
