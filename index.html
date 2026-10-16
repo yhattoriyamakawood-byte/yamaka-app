@@ -506,7 +506,7 @@
     <div class="format-list">
       <div class="format-card tap" onclick="vfStart()">
         <div class="ic" style="background:var(--accent-wash); color:var(--accent-deep);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div><div class="t">ランダム再生</div><div class="s">スクロールで次々に再生（下にスワイプ）</div></div>
+        <div><div class="t">ランダム再生</div><div class="s">上にスワイプで次々に再生</div></div>
         <div class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
     </div>
@@ -539,20 +539,6 @@
       <h1 id="vl-title">動画</h1>
     </div>
     <div id="vl-body" style="padding-top:8px;"></div>
-  </div>
-
-  <!-- ===================== 動画学習：選択再生 ===================== -->
-  <div class="screen" id="screen-vplayer">
-    <div class="sub-header">
-      <button class="back-btn tap" onclick="vpBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <h1 id="vp-head">動画</h1>
-    </div>
-    <div class="vp-box"><video id="vp-video" playsinline controls preload="metadata"></video></div>
-    <div class="vp-title" id="vp-title"></div>
-    <div class="vp-sub" id="vp-sub"></div>
-    <div class="vp-ctrl"><button id="vp-prev" onclick="vpMove(-1)">◀ 前へ</button><button class="pri" id="vp-next" onclick="vpMove(1)">次へ ▶</button></div>
-    <label class="vp-auto"><input type="checkbox" id="vp-auto" checked> 終わったら次の動画を自動再生</label>
-    <div class="vh-credit">音声：VOICEVOX:WhiteCUL</div>
   </div>
 
   <!-- ===================== 動画学習：ランダム（スクロール）再生 ===================== -->

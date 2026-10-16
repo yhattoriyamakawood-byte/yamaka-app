@@ -64,38 +64,13 @@
     });
     $('vl-body').innerHTML = h;
     Array.prototype.forEach.call($('vl-body').querySelectorAll('.vl-item'), function(el){
-      el.onclick = function(){ vpOpen(parseInt(el.getAttribute('data-i'),10)); };
+      el.onclick = function(){ vfPlayList(curList, parseInt(el.getAttribute('data-i'),10)); };
     });
     go('vlist');
   }
 
-  /* ---------- 選択：再生 ---------- */
-  function vpOpen(i){
-    curIdx = i; var v = curList[i], el = $('vp-video');
-    $('vp-head').textContent = curSub;
-    $('vp-title').textContent = v.title;
-    $('vp-sub').textContent = curCat+' ／ '+(i+1)+' / '+curList.length+' 本目';
-    $('vp-prev').disabled = (i===0); $('vp-next').disabled = (i===curList.length-1);
-    el.poster = poster(v); el.src = src(v);
-    go('vplayer');
-    var pr = el.play(); if(pr && pr.catch) pr.catch(function(){});
-  }
-  window.vpMove = function(d){ var n = curIdx+d; if(n>=0 && n<curList.length) vpOpen(n); };
-  window.vpBack = function(){ stopAll(); vlOpen(curCat, curSub); };
-  (function(){
-    var el = $('vp-video');
-    if(!el) return;
-    el.addEventListener('ended', function(){
-      mark(curList[curIdx]);
-      if($('vp-auto').checked && curIdx < curList.length-1) vpOpen(curIdx+1);
-    });
-    el.addEventListener('timeupdate', function(){
-      if(el.duration && el.currentTime/el.duration > 0.8) mark(curList[curIdx]);
-    });
-  })();
-
   /* ---------- ランダム（スクロール）再生 ---------- */
-  var feed = [], cur = -1, io = null, soundOn = true, needTap = false;
+  var feed = [], cur = -1, io = null, soundOn = true, needTap = false, feedMode = 'random';
   function buildOrder(){
     var pool = DATA.filter(function(v){ return pref.pool==='全部' || v.cat===pref.pool; });
     if(!pref.unw) return shuffle(pool);
@@ -127,21 +102,26 @@
     var order = buildOrder(), box = $('vf-scroll'), start = feed.length;
     order.forEach(function(v, k){ feed.push(v); var el = itemEl(v, start+k); box.appendChild(el); io.observe(el); });
   }
-  window.vfStart = function(){
+  function openFeed(list, startIdx, mode){
     stopAll();
+    feedMode = mode;
     var box = $('vf-scroll'); box.innerHTML = ''; feed = []; cur = -1; soundOn = true; needTap = false;
-    if(io) io.disconnect();
     io = new IntersectionObserver(function(es){
       es.forEach(function(e){ if(e.isIntersecting && e.intersectionRatio >= 0.6){ activate(parseInt(e.target.getAttribute('data-i'),10)); } });
     }, { root: box, threshold: [0.6] });
-    appendBatch();
+    if(mode === 'random'){ appendBatch(); }
+    else { list.forEach(function(v, k){ feed.push(v); var el = itemEl(v, k); box.appendChild(el); io.observe(el); }); }
     if(!feed.length){ alert('この対象には動画がありません'); return; }
     go('vfeed');
-    box.scrollTop = 0;
-    setTimeout(function(){ activate(0, true); }, 30);
-    var hint = document.createElement('div'); hint.className = 'vf-hint'; hint.textContent = '↑ 上にスワイプで次の動画'; $('vf-scroll').firstChild.appendChild(hint);
+    box.scrollTop = startIdx * box.clientHeight;
+    setTimeout(function(){ activate(startIdx, true); }, 30);
+    var hint = document.createElement('div'); hint.className = 'vf-hint';
+    hint.textContent = (startIdx < feed.length-1) ? '↑ 上にスワイプで次の動画' : '↓ 下にスワイプで前の動画';
+    items()[startIdx].appendChild(hint);
     updateMuteIcon();
-  };
+  }
+  window.vfStart = function(){ openFeed(null, 0, 'random'); };
+  window.vfPlayList = function(list, idx){ openFeed(list, idx, 'list'); };
   function items(){ return $('vf-scroll').children; }
   function load(i){
     var el = items()[i]; if(!el) return;
@@ -165,7 +145,7 @@
     var vid = el.querySelector('video'); el.classList.remove('paused');
     vid.currentTime = 0;
     playWithSound(vid, el);
-    if(i >= n-3) appendBatch();
+    if(feedMode==='random' && i >= n-3) appendBatch();
   }
   function playWithSound(vid, el){
     vid.muted = !soundOn;
@@ -185,7 +165,7 @@
     updateMuteIcon();
   }
   function next(){
-    var el = items()[cur+1]; if(!el){ appendBatch(); el = items()[cur+1]; }
+    var el = items()[cur+1]; if(!el && feedMode==='random'){ appendBatch(); el = items()[cur+1]; }
     if(el) el.scrollIntoView({ behavior:'smooth', block:'start' });
   }
   function updateMuteIcon(){
@@ -195,10 +175,10 @@
       : '<path d="M11 5L6 9H3v6h3l5 4V5z" stroke-linejoin="round"/><path d="M16 9l5 6M21 9l-5 6" stroke-linecap="round"/>';
   }
   window.vfToggleMute = function(){ soundOn = !soundOn; applySound(); updateMuteIcon(); };
-  window.vfClose = function(){ stopAll(); goVideoHub(); };
+  window.vfClose = function(){ var m = feedMode; stopAll(); if(m==='list') vlOpen(curCat, curSub); else goVideoHub(); };
 
   function stopAll(){
-    Array.prototype.forEach.call(document.querySelectorAll('#screen-vfeed video, #vp-video'), function(v){
+    Array.prototype.forEach.call(document.querySelectorAll('#screen-vfeed video'), function(v){
       try{ v.pause(); }catch(e){}
       if(v.getAttribute('src')){ v.removeAttribute('src'); v.load(); }
     });
@@ -209,9 +189,9 @@
   /* 他の画面に移るときは再生を止める */
   var _show = window.showScreen;
   window.showScreen = function(id){
-    if(id !== 'vfeed' && id !== 'vplayer'){
+    if(id !== 'vfeed'){
       var act = document.querySelector('.screen.active');
-      if(act && (act.id==='screen-vfeed' || act.id==='screen-vplayer')) stopAll();
+      if(act && act.id==='screen-vfeed') stopAll();
     }
     _show(id);
   };
