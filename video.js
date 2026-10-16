@@ -1,7 +1,7 @@
 /* ===== 動画学習（選択 / ランダム）===== */
 (function(){
   var DATA = window.VIDEO_DATA || [];
-  var CATS = ['お金','土地','建物','関係者','その他'];
+  var CATS = ['建物','土地','お金','関係者','その他'];
   var KEY_W = 'hop_video_watched', KEY_P = 'hop_video_pref';
   var watched = {}, pref = { pool:'全部', unw:true, sound:true };
   try{ watched = JSON.parse(localStorage.getItem(KEY_W)||'{}')||{}; }catch(e){}
