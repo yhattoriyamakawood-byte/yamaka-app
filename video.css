@@ -1,0 +1,56 @@
+/* ===== 動画学習 ===== */
+.vh-stat{ margin:14px 20px 0; background:var(--surface); border-radius:var(--r-l); padding:14px 16px; }
+.vh-stat .row{ display:flex; justify-content:space-between; align-items:baseline; font-size:12px; color:var(--grey); font-weight:600; }
+.vh-stat .row b{ font-size:20px; color:var(--ink); font-family:'Inter',sans-serif; font-weight:800; }
+.vh-bar{ height:6px; border-radius:99px; background:var(--line); overflow:hidden; margin-top:8px; }
+.vh-bar > i{ display:block; height:100%; width:0; background:linear-gradient(90deg,#FF8A6B,#FF6B4A); border-radius:99px; transition:width .4s; }
+.vh-chips{ display:flex; flex-wrap:wrap; gap:8px; padding:6px 20px 0; }
+.vh-chip{ border:1px solid var(--line); background:#fff; color:var(--ink-soft); border-radius:var(--r-pill); padding:7px 14px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:inherit; }
+.vh-chip.on{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.vh-label{ font-size:12px; font-weight:700; color:var(--grey); padding:18px 20px 8px; }
+.vh-credit{ font-size:10.5px; color:var(--grey-light); text-align:center; padding:18px 20px 0; line-height:1.6; }
+.vs-cat{ padding:18px 20px 8px; font-size:13px; font-weight:800; font-family:'Zen Kaku Gothic New',sans-serif; display:flex; align-items:center; gap:8px; }
+.vs-cat i{ width:6px; height:16px; border-radius:3px; background:var(--accent); display:inline-block; }
+.vs-row{ margin:0 20px 8px; background:var(--surface); border-radius:var(--r-m); padding:14px 16px; display:flex; align-items:center; gap:12px; cursor:pointer; }
+.vs-row .t{ font-size:14px; font-weight:700; flex:1; line-height:1.4; }
+.vs-row .c{ font-size:11.5px; color:var(--grey); font-family:'Inter',sans-serif; font-weight:700; white-space:nowrap; }
+.vs-row .chev{ color:var(--grey-light); display:flex; }
+.vs-row .chev svg{ width:16px; height:16px; }
+.vl-item{ margin:0 20px 8px; background:var(--surface); border-radius:var(--r-m); padding:10px; display:flex; align-items:center; gap:12px; cursor:pointer; }
+.vl-item .th{ width:54px; height:96px; border-radius:10px; background:#222 center/cover no-repeat; flex-shrink:0; position:relative; overflow:hidden; }
+.vl-item .th::after{ content:""; position:absolute; left:50%; top:50%; width:22px; height:22px; margin:-11px 0 0 -11px; border-radius:50%; background:rgba(0,0,0,.45) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M9 7l9 5-9 5z'/%3E%3C/svg%3E") center/16px no-repeat; }
+.vl-item .tt{ flex:1; font-size:14px; font-weight:700; line-height:1.45; }
+.vl-item .no{ font-size:10.5px; color:var(--grey-light); font-weight:700; font-family:'Inter',sans-serif; margin-bottom:3px; }
+.vl-item .ck{ width:24px; height:24px; border-radius:50%; border:2px solid var(--line); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; font-weight:800; }
+.vl-item.done .ck{ background:var(--green); border-color:var(--green); }
+.vp-box{ margin:8px auto 0; width:min(calc(100% - 40px), calc((100vh - 330px) * 0.5625)); min-width:200px; aspect-ratio:9/16; background:#000; border-radius:18px; overflow:hidden; position:relative; box-shadow:var(--shadow-card); }
+.vp-box video{ width:100%; height:100%; display:block; object-fit:contain; background:#000; }
+.vp-title{ padding:14px 20px 0; font-size:16px; font-weight:800; font-family:'Zen Kaku Gothic New',sans-serif; line-height:1.4; }
+.vp-sub{ padding:3px 20px 0; font-size:11.5px; color:var(--grey); font-weight:600; }
+.vp-ctrl{ display:flex; gap:10px; padding:14px 20px 0; }
+.vp-ctrl button{ flex:1; border:none; border-radius:var(--r-m); padding:13px 0; font-size:13.5px; font-weight:800; font-family:inherit; cursor:pointer; background:var(--surface); color:var(--ink); }
+.vp-ctrl button.pri{ background:var(--accent); color:#fff; }
+.vp-ctrl button:disabled{ opacity:.35; }
+.vp-auto{ display:flex; align-items:center; gap:8px; padding:12px 20px 0; font-size:12.5px; color:var(--grey); font-weight:600; }
+/* ランダム（スクロール）再生 */
+#screen-vfeed{ padding:0 !important; }
+#screen-vfeed.active{ position:fixed; top:0; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; z-index:60; background:#000; animation:none; display:block; }
+.vf-scroll{ height:100%; overflow-y:scroll; scroll-snap-type:y mandatory; overscroll-behavior:contain; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+.vf-scroll::-webkit-scrollbar{ display:none; }
+.vf-item{ height:100%; scroll-snap-align:start; scroll-snap-stop:always; position:relative; background:#000; overflow:hidden; }
+.vf-item video{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#000; }
+.vf-top{ position:absolute; top:0; left:0; right:0; padding:calc(env(safe-area-inset-top,0px) + 12px) 14px 0; display:flex; justify-content:space-between; z-index:3; pointer-events:none; }
+.vf-top button{ pointer-events:auto; width:40px; height:40px; border-radius:50%; border:none; background:rgba(0,0,0,.5); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.vf-top svg{ width:20px; height:20px; }
+.vf-info{ position:absolute; left:0; right:0; bottom:0; padding:60px 16px calc(env(safe-area-inset-bottom,0px) + 16px); background:linear-gradient(transparent,rgba(0,0,0,.7)); color:#fff; z-index:2; pointer-events:none; }
+.vf-info .tag{ display:inline-block; font-size:11px; font-weight:800; background:rgba(255,255,255,.18); border-radius:99px; padding:3px 10px; margin-bottom:6px; }
+.vf-info .ti{ font-size:16px; font-weight:800; line-height:1.4; font-family:'Zen Kaku Gothic New',sans-serif; }
+.vf-info .cr{ font-size:10px; opacity:.75; margin-top:6px; }
+.vf-prog{ position:absolute; left:0; right:0; bottom:0; height:3px; background:rgba(255,255,255,.25); z-index:4; }
+.vf-prog i{ display:block; height:100%; width:0; background:var(--accent); }
+.vf-snd{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:4; background:rgba(0,0,0,.65); color:#fff; border:none; border-radius:99px; padding:12px 20px; font-size:14px; font-weight:800; font-family:inherit; cursor:pointer; display:none; }
+.vf-snd.show{ display:block; }
+.vf-pause{ position:absolute; left:50%; top:50%; width:64px; height:64px; margin:-32px 0 0 -32px; border-radius:50%; background:rgba(0,0,0,.5) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M9 7l9 5-9 5z'/%3E%3C/svg%3E") center/34px no-repeat; z-index:3; display:none; pointer-events:none; }
+.vf-item.paused .vf-pause{ display:block; }
+.vf-hint{ position:absolute; left:0; right:0; top:18%; text-align:center; color:#fff; font-size:12px; font-weight:700; z-index:3; pointer-events:none; opacity:.9; animation:vfHint 4s forwards; }
+@keyframes vfHint{ 0%,70%{opacity:.9} 100%{opacity:0} }
